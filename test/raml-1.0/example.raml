@@ -1,4 +1,4 @@
-#%RAML 0.8
+#%RAML 1.0
 title: Example
 version: 1
 baseUri: http://example.com/{version}
@@ -25,25 +25,25 @@ documentation:
     content: More content here. Including **bold** text!
 
 securitySchemes:
-  - oauth_1_0:
-      description: OAuth 1.0 continues to be supported for all API requests, but OAuth 2.0 is now preferred.
-      type: OAuth 1.0
-      settings:
-        requestTokenUri: https://api.dropbox.com/1/oauth/request_token
-        authorizationUri: https://www.dropbox.com/1/oauth/authorize
-        tokenCredentialsUri: https://api.dropbox.com/1/oauth/access_token
+  oauth_1_0:
+    description: OAuth 1.0 continues to be supported for all API requests, but OAuth 2.0 is now preferred.
+    type: OAuth 1.0
+    settings:
+      requestTokenUri: https://api.dropbox.com/1/oauth/request_token
+      authorizationUri: https://www.dropbox.com/1/oauth/authorize
+      tokenCredentialsUri: https://api.dropbox.com/1/oauth/access_token
 
 traits:
-  - paged:
-      queryParameters:
-        page_size:
-          description: The number of items per page
-          type: number
-          default: 20
-        page:
-          description: The page to return
-          type: number
-          default: 0
+  paged:
+    queryParameters:
+      page_size:
+        description: The number of items per page
+        type: number
+        default: 20
+      page:
+        description: The page to return
+        type: number
+        default: 0
 
 /account:
   displayName: ACCOUNTS
@@ -105,11 +105,11 @@ traits:
       description: Update the account
       body:
         application/x-www-form-urlencoded:
-          formParameters:
+          type: object
+          properties:
             name:
               description: name on account
               type: string
-              example: Naruto Uzumaki
             gender:
               enum: ["male", "female"]
 
@@ -233,7 +233,7 @@ traits:
         example: '2014-12-31T00:00:00.000Z'
         type: string
         required: false
-        pattern: ^[a-zA-Z].+$
+        pattern: ^[a-zA-Z0-9\-\:].+$
 
   post:
     description: Creates a new user
@@ -242,7 +242,7 @@ traits:
         example: |
           {
             "email": "john@example.com",
-            "name": "John Doe",
+            "name": "John Doe"
           }
 
   /{userId}:
@@ -294,7 +294,7 @@ traits:
           application/json:
             example: |
               {
-                "user_id": 4,
+                "user_id": 4
               }
 
       /{userId}:
